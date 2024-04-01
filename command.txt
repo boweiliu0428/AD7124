@@ -1,0 +1,16 @@
+sudo bash -c 'dtc -I dts -O dtb /home/analog/Downloads/rpi-ad7124-8-all-diff-cs0-int25-overlay-2.dts > /boot/overlays/rpi-ad7124-8-all-diff-cs0-int25-overlay-2.dtbo'
+
+sudo mousepad /boot/config.txt
+
+cd /sys/bus/iio/devices/iio\:device0
+
+iio_info
+
+sudo cp -rf /home/analog/Downloads/rpi_latest_boot/* /boot
+sudo cp -rf /home/analog/Downloads/5.15* /lib/modules
+
+dtoverlay=rpi-ad7124-8-all-diff-cs0-int25-overlay-2,irq_gpio=19
+
+hostnamectl
+
+sudo date -s 'Fri Mar 22 20:28:25 EDT 2024'
