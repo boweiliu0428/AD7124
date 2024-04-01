@@ -22,7 +22,7 @@ def foo():
     # sets sample rate for all channels
     ad7124.sample_rate = 1600
     ad7124.rx_enabled_channels = [0,1,2,3,4,5,6,7]
-    ad7124.rx_buffer_size = 200
+    ad7124.rx_buffer_size = 100
     ad7124._ctx.set_timeout(100000)
     
 #     ad7124.rx()
@@ -48,25 +48,23 @@ def foo():
 #     f.close()
     
     # raw = ad7124.channel[0].raw
-    data = np.array(ad7124.rx()) 
+#     data = np.array(ad7124.rx()) 
 #     print([bin(i) for i in data.flatten()])
 #     scale = 0.000298023
 #     offset = -2500
 #     data = data * scale + offset
-    print(data[5])
+#     print(data[5])
 #     print(data)
-    print(max(data[0]),max(data[1]),max(data[2]),max(data[3]),max(data[4]),max(data[5]),max(data[6]),max(data[7]))
-    print(min(data[0]),min(data[1]),min(data[2]),min(data[3]),min(data[4]),min(data[5]),min(data[6]),min(data[7]))
     
-#     with open("test_data.csv", "a") as f:
-#         start_time = time.time()
-#         i=0
-#         while time.time() - start_time < 300:
-#             data = np.array(ad7124.rx()) 
-#             np.savetxt(f, data.T, delimiter=",")
-#             i += 1
-#             print(i)
-#     print("---%d runs use %s seconds ---" % (i, time.time() - start_time))
+    with open("test_data.csv", "a") as f:
+        start_time = time.time()
+        i=0
+        while time.time() - start_time < 300:
+            data = np.array(ad7124.rx()) 
+            np.savetxt(f, data.T, delimiter=",")
+            i += 1
+            print(i)
+    print("---%d runs use %s seconds ---" % (i, time.time() - start_time))
     
 #     for addr in range(57):
 #         val0 = int(reg0[addr]['Value'], 16)
@@ -79,24 +77,20 @@ def foo():
     print(ad7124.channel[0].scale, ad7124.channel[0].offset)
     print(ad7124.rx_enabled_channels)
     
-    fig, (ax0, ax1, ax2, ax3) = plt.subplots(4, 1)
 #     plt.plot(data)
-    ax0.plot(data[0], label='0')
-    ax0.plot(data[1], label='1')
-    ax0.plot(data[2], label='2')
-    ax0.plot(data[3], label='3')
-    ax0.plot(data[4], label='4')
-    ax0.plot(data[5], label='5')
-    ax0.plot(data[6], label='6')
-    ax0.plot(data[7], label='7')
-    ax0.grid()
-#     ax0.xlabel('sample')
-#     ax0.ylabel('mV')
-    ax0.legend(bbox_to_anchor=(1., 1.))
+    plt.plot(data[0], label='0')
+    plt.plot(data[1], label='1')
+    plt.plot(data[2], label='2')
+    plt.plot(data[3], label='3')
+    plt.plot(data[4], label='4')
+    plt.plot(data[5], label='5')
+    plt.plot(data[6], label='6')
+    plt.plot(data[7], label='7')
+    plt.grid()
+    plt.xlabel('sample')
+    plt.ylabel('mV')
+    plt.legend(bbox_to_anchor=(1., 1.))
 #     plt.savefig('fig/4-5_6-7_2.png')
-    ax1.psd(data[0], ad7124.rx_buffer_size, ad7124.sample_rate/32)
-    ax2.psd(data[1], ad7124.rx_buffer_size, ad7124.sample_rate/32)
-    ax3.psd(data[2], ad7124.rx_buffer_size, ad7124.sample_rate/32)
     plt.show()
 
 if __name__ == '__main__':
