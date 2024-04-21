@@ -1,0 +1,116 @@
+analog@analog:~/Desktop $ iio_info
+iio_info version: 0.25 (git tag:8fb78e06)
+Libiio version: 0.25 (git tag: 8fb78e0) backends: local xml ip usb serial
+IIO context created with local backend.
+Backend version: 0.25 (git tag: 8fb78e0)
+Backend description string: Linux analog 5.15.92-v7l+ #1 SMP Mon Mar 25 18:44:23 UTC 2024 armv7l
+IIO context has 4 attributes:
+	hw_carrier: Raspberry Pi 4 Model B Rev 1.5
+	dtoverlay: rpi-ad7124-8-all-diff-cs0-int25-overlay-2,vc4-kms-v3d
+	local,kernel: 5.15.92-v7l+
+	uri: local:
+IIO context has 4 devices:
+	hwmon0: rpi_volt
+		1 channels found:
+			in0:  (input)
+			1 channel-specific attributes found:
+				attr  0: lcrit_alarm value: 0
+		No trigger on this device
+	iio:device0: ad7124-8 (buffer capable)
+		8 channels found:
+			voltage0-voltage1:  (input, index: 0, format: be:u24/32>>0)
+			6 channel-specific attributes found:
+				attr  0: filter_low_pass_3db_frequency value: 5030
+				attr  1: offset value: -8388608
+				attr  2: raw ERROR: Device or resource busy (16)
+				attr  3: sampling_frequency value: 19200
+				attr  4: scale value: 0.000298023
+				attr  5: scale_available value: 0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023
+			voltage2-voltage3:  (input, index: 1, format: be:u24/32>>0)
+			6 channel-specific attributes found:
+				attr  0: filter_low_pass_3db_frequency value: 5030
+				attr  1: offset value: -8388608
+				attr  2: raw ERROR: Device or resource busy (16)
+				attr  3: sampling_frequency value: 19200
+				attr  4: scale value: 0.000298023
+				attr  5: scale_available value: 0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023
+			voltage4-voltage5:  (input, index: 2, format: be:u24/32>>0)
+			6 channel-specific attributes found:
+				attr  0: filter_low_pass_3db_frequency value: 5030
+				attr  1: offset value: -8388608
+				attr  2: raw ERROR: Device or resource busy (16)
+				attr  3: sampling_frequency value: 19200
+				attr  4: scale value: 0.000298023
+				attr  5: scale_available value: 0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023
+			voltage6-voltage7:  (input, index: 3, format: be:u24/32>>0)
+			6 channel-specific attributes found:
+				attr  0: filter_low_pass_3db_frequency value: 5030
+				attr  1: offset value: -8388608
+				attr  2: raw ERROR: Device or resource busy (16)
+				attr  3: sampling_frequency value: 19200
+				attr  4: scale value: 0.000298023
+				attr  5: scale_available value: 0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023
+			voltage8-voltage9:  (input, index: 4, format: be:u24/32>>0)
+			6 channel-specific attributes found:
+				attr  0: filter_low_pass_3db_frequency value: 5030
+				attr  1: offset value: -8388608
+				attr  2: raw ERROR: Device or resource busy (16)
+				attr  3: sampling_frequency value: 19200
+				attr  4: scale value: 0.000298023
+				attr  5: scale_available value: 0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023
+			voltage10-voltage11:  (input, index: 5, format: be:u24/32>>0)
+			6 channel-specific attributes found:
+				attr  0: filter_low_pass_3db_frequency value: 5030
+				attr  1: offset value: -8388608
+				attr  2: raw ERROR: Device or resource busy (16)
+				attr  3: sampling_frequency value: 19200
+				attr  4: scale value: 0.000298023
+				attr  5: scale_available value: 0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023
+			voltage12-voltage13:  (input, index: 6, format: be:u24/32>>0)
+			6 channel-specific attributes found:
+				attr  0: filter_low_pass_3db_frequency value: 5030
+				attr  1: offset value: -8388608
+				attr  2: raw ERROR: Device or resource busy (16)
+				attr  3: sampling_frequency value: 19200
+				attr  4: scale value: 0.000298023
+				attr  5: scale_available value: 0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023
+			voltage14-voltage15:  (input, index: 7, format: be:u24/32>>0)
+			6 channel-specific attributes found:
+				attr  0: filter_low_pass_3db_frequency value: 5030
+				attr  1: offset value: -8388608
+				attr  2: raw ERROR: Device or resource busy (16)
+				attr  3: sampling_frequency value: 19200
+				attr  4: scale value: 0.000298023
+				attr  5: scale_available value: 0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023
+		1 buffer-specific attributes found:
+				attr  0: data_available value: 8192
+		Current trigger: trigger0(ad7124-8-dev0)
+	iio_sysfs_trigger:
+		0 channels found:
+		2 device-specific attributes found:
+				attr  0: add_trigger ERROR: Permission denied (13)
+				attr  1: remove_trigger ERROR: Permission denied (13)
+		No trigger on this device
+	trigger0: ad7124-8-dev0
+		0 channels found:
+		No trigger on this device
+analog@analog:~/Desktop $ cd /sys/bus/iio/devices/iio\:device0
+analog@analog:/sys/bus/iio/devices/iio:device0 $ ls -a
+.                                                     in_voltage12-voltage13_sampling_frequency             in_voltage6-voltage7_offset
+..                                                    in_voltage12-voltage13_scale                          in_voltage6-voltage7_raw
+buffer                                                in_voltage14-voltage15_filter_low_pass_3db_frequency  in_voltage6-voltage7_sampling_frequency
+buffer0                                               in_voltage14-voltage15_offset                         in_voltage6-voltage7_scale
+dev                                                   in_voltage14-voltage15_raw                            in_voltage8-voltage9_filter_low_pass_3db_frequency
+in_voltage0-voltage1_filter_low_pass_3db_frequency    in_voltage14-voltage15_sampling_frequency             in_voltage8-voltage9_offset
+in_voltage0-voltage1_offset                           in_voltage14-voltage15_scale                          in_voltage8-voltage9_raw
+in_voltage0-voltage1_raw                              in_voltage2-voltage3_filter_low_pass_3db_frequency    in_voltage8-voltage9_sampling_frequency
+in_voltage0-voltage1_sampling_frequency               in_voltage2-voltage3_offset                           in_voltage8-voltage9_scale
+in_voltage0-voltage1_scale                            in_voltage2-voltage3_raw                              in_voltage_scale_available
+in_voltage10-voltage11_filter_low_pass_3db_frequency  in_voltage2-voltage3_sampling_frequency               name
+in_voltage10-voltage11_offset                         in_voltage2-voltage3_scale                            of_node
+in_voltage10-voltage11_raw                            in_voltage4-voltage5_filter_low_pass_3db_frequency    power
+in_voltage10-voltage11_sampling_frequency             in_voltage4-voltage5_offset                           scan_elements
+in_voltage10-voltage11_scale                          in_voltage4-voltage5_raw                              subsystem
+in_voltage12-voltage13_filter_low_pass_3db_frequency  in_voltage4-voltage5_sampling_frequency               trigger
+in_voltage12-voltage13_offset                         in_voltage4-voltage5_scale                            uevent
+in_voltage12-voltage13_raw                            in_voltage6-voltage7_filter_low_pass_3db_frequency
