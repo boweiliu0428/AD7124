@@ -21,7 +21,7 @@ ad7124 = adi.ad7124(uri="ip:localhost")
 ad7124.rx_output_type = "SI"
 
 # Enable channels for data acquisition
-ad7124.rx_enabled_channels = [0, 1, 2, 3, 4, 5, 6, 7]
+ad7124.rx_enabled_channels = [3]
 
 # Set the buffer size for data acquisition
 ad7124.rx_buffer_size = 30000
@@ -81,7 +81,7 @@ def real_sampling_rate(from_reg: bool, chan=0):
     return 1 / (settle * len(ad7124.rx_enabled_channels))
 
 
-# set filter of ADC. Only sinc4 or sinc3 filter (without averaging block) are implemented.
+# Set filter of ADC. Only sinc4 or sinc3 filter (without averaging block) are implemented.
 # Arguments:
 #       ft: filter type, 'sinc4' or 'sinc3'
 def set_filter(ft : str):
@@ -139,15 +139,15 @@ if __name__ == '__main__':
     print(find_threshold(data[3], -990))
     print(freq2fs(ad7124.sample_rate))
     
-    # plt.plot(data)
-    plt.plot(data[0], label='0')
-    plt.plot(data[1], label='1')
-    plt.plot(data[2], label='2')
-    plt.plot(data[3], label='3')
-    plt.plot(data[4], label='4')
-    plt.plot(data[5], label='5')
-    plt.plot(data[6], label='6')
-    plt.plot(data[7], label='7')
+    plt.plot(data)
+    # plt.plot(data[0], label='0')
+    # plt.plot(data[1], label='1')
+    # plt.plot(data[2], label='2')
+    # plt.plot(data[3], label='3')
+    # plt.plot(data[4], label='4')
+    # plt.plot(data[5], label='5')
+    # plt.plot(data[6], label='6')
+    # plt.plot(data[7], label='7')
     plt.grid()
     plt.xlabel('sample')
     plt.ylabel('mV')
@@ -155,12 +155,12 @@ if __name__ == '__main__':
 
 #     check_register(check_all=True)
 #     print(real_sampling_rate(True, chan=3))
-    print(real_sampling_rate(False))
+    # print(real_sampling_rate(False))
     plt.figure()
-    pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate(False))
+    pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, ad7124.sample_rate)
     # find the frequency where pxx is maximum
     print(freqs[np.argmax(pxx)])
 
     plt.tight_layout()
-    plt.savefig('fig/59Hz_' + ft + '.pdf')
+    plt.savefig('fig/1ch_384Hz_' + ft + '.pdf')
     plt.show()
