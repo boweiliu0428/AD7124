@@ -75,7 +75,7 @@ def real_sampling_rate(from_reg: bool, chan=0):
         settle = (3 * 32 * fs + dt) / fclk # settle time
     else:
         raise NotImplementedError('filter for real_sampling_rate function must be sinc4 or sinc3!')
-    print(bin(reg), reg, fs, settle)
+#     print(bin(reg), fs, settle)
     return 1 / (settle * len(ad7124.rx_enabled_channels))
 
 
@@ -133,9 +133,8 @@ if __name__ == '__main__':
     set_filter(ft)
 
     data = np.array(ad7124.rx())
-    print(find_threshold(data, -0.9))
+#     print(find_threshold(data[3], -990))
     
-    # fig, (ax0, ax1) = plt.subplots(2, 1)
     # plt.plot(data)
     plt.plot(data[0], label='0')
     plt.plot(data[1], label='1')
@@ -150,8 +149,8 @@ if __name__ == '__main__':
     plt.ylabel('mV')
     plt.legend(bbox_to_anchor=(1., 1.))
 
-    check_register(check_all=True)
-    print(real_sampling_rate(True))
+#     check_register(check_all=True)
+#     print(real_sampling_rate(True, chan=3))
     print(real_sampling_rate(False))
     # pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate(False))
     # find the frequency where pxx is maximum
