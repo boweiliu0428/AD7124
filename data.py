@@ -24,10 +24,10 @@ ad7124.rx_output_type = "SI"
 ad7124.rx_enabled_channels = [0, 1, 2, 3, 4, 5, 6, 7]
 
 # Set the buffer size for data acquisition
-ad7124.rx_buffer_size = 3000
+ad7124.rx_buffer_size = 30000
 
 # Set the timeout for communication with the ADC
-ad7124._ctx.set_timeout(100000)
+ad7124._ctx.set_timeout(1000000)
 
 # clock frequency at full power 
 # WARNING: the Python packge may implicitly change power mode
@@ -129,33 +129,34 @@ def find_threshold(data, threshold):
 
 if __name__ == '__main__':
     # filter type is 'sinc4' or 'sinc3'
-    ft = 'sinc4'
+    ft = 'sinc3'
     
 #     ad7124.sample_rate = 1600 if ft == 'sinc4' else 1200
     ad7124.sample_rate = fclk / 32
     set_filter(ft)
 
     data = np.array(ad7124.rx())
-    print(find_threshold(data[3], -999.5))
+    print(find_threshold(data[3], -990))
     print(freq2fs(ad7124.sample_rate))
     
     # plt.plot(data)
-    # plt.plot(data[0], label='0')
-    # plt.plot(data[1], label='1')
-    # plt.plot(data[2], label='2')
-    # plt.plot(data[3], label='3')
-    # plt.plot(data[4], label='4')
-    # plt.plot(data[5], label='5')
-    # plt.plot(data[6], label='6')
-    # plt.plot(data[7], label='7')
-    # plt.grid()
-    # plt.xlabel('sample')
-    # plt.ylabel('mV')
-    # plt.legend(bbox_to_anchor=(1., 1.))
+    plt.plot(data[0], label='0')
+    plt.plot(data[1], label='1')
+    plt.plot(data[2], label='2')
+    plt.plot(data[3], label='3')
+    plt.plot(data[4], label='4')
+    plt.plot(data[5], label='5')
+    plt.plot(data[6], label='6')
+    plt.plot(data[7], label='7')
+    plt.grid()
+    plt.xlabel('sample')
+    plt.ylabel('mV')
+    plt.legend(bbox_to_anchor=(1., 1.))
 
 #     check_register(check_all=True)
 #     print(real_sampling_rate(True, chan=3))
     print(real_sampling_rate(False))
+    plt.figure()
     pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate(False))
     # find the frequency where pxx is maximum
     print(freqs[np.argmax(pxx)])
