@@ -129,14 +129,14 @@ def find_threshold(data, threshold):
 
 if __name__ == '__main__':
     # filter type is 'sinc4' or 'sinc3'
-    ft = 'sinc3'
+    ft = 'sinc4'
     
 #     ad7124.sample_rate = 1600 if ft == 'sinc4' else 1200
     ad7124.sample_rate = fclk / 32
     set_filter(ft)
 
     data = np.array(ad7124.rx())
-    print(find_threshold(data[3], -999.6))
+    print(find_threshold(data[3], -999.5))
     print(freq2fs(ad7124.sample_rate))
     
     # plt.plot(data)
