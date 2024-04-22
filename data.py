@@ -34,16 +34,38 @@ fclk = 614400
 # register configuration file recorded from Windows evaluation software
 reg0 = pd.read_json('2-3 4-5 Register Map.json')['Registers']
 
+# Convert sampling frequency to FS[10:0] value
+# Arguments:
+#       freq: sampling frequency specified in ad7124.sample_rate
+# Returns: FS[10:0] value
+def freq2fs(freq):
+    return int(fclk / (32 * freq))
 
-# Returns: the sampling rate of each enabled channel
+
+# Calculate the real sampling rate of the ADC, which is the sampling rate of each enabled channel
+# ad7124.sample_rate is (in general) different from the real sampling rate of each enabled channel as
+# ad7124.sample_rate does not take into account of filter type and filter operation mode.
+# Instead, ad7124.sample_rate is iio's parameter to specify FS[10:0] value.
+# See freq2fs function for more details.
 # WARNING: This function assumes number of enabled channels > 1, each channel has the same sampling rate,
 #       and we have sinc4 or sinc3 filter. This function reads FS[10:0] from the last enabled channel register.
 #       When no data has been collected, the registers may not have been initiated or updated.
 # When multipled channels are enabled, ADC is automatically at zero latency mode.
 # There is an extra dead time since we are continuously switching channels.
-def real_sampling_rate():
-    reg = ad7124._ctrl.reg_read(ad7124.rx_enabled_channels[2] + 33) 
-    fs = reg % (2**11) # FS[10: 0]
+# 
+# Arguments: 
+#       from_reg: if True, return the real sampling rate of channel 'chan'
+#           if False, return the real sampling rate corresponding to ad7124.sample_rate
+#       chan: channel number for which to determine filter type (and calculate the sampling rate) (default 0)
+# Returns: the sampling rate of each enabled channel
+def real_sampling_rate(from_reg: bool, chan=0):
+    reg = ad7124._ctrl.reg_read(ad7124.rx_enabled_channels[chan] + 33) 
+    if from_reg == True:
+        fs = reg % (2**11) # FS[10: 0]
+    elif from_reg == False:
+        fs = freq2fs(ad7124.sample_rate)
+    else: raise ValueError('fr must be True or False!')
+
     # Dead Time = 30 when the old channel and the new channel both have 
     # an FS[10:0] > 1 or both have an FS[10:0] = 1
     dt = 30
@@ -58,6 +80,8 @@ def real_sampling_rate():
 
 
 # set filter of ADC. Only sinc4 or sinc3 filter (without averaging block) are implemented.
+# Arguments:
+#       ft: filter type, 'sinc4' or 'sinc3'
 def set_filter(ft : str):
     if ft != 'sinc4' and ft != 'sinc3':
         raise NotImplementedError('Choose sinc4 or sinc3 filter! Other filters not implemented')
@@ -77,6 +101,8 @@ def set_filter(ft : str):
 
 # Function to check the register values stored from Windows evaluation software against the actual values read from the ADC
 # WARNING: ADC registers do not need to match the values stored in the Windows software to work properly
+# Arguments:
+#       check_all: if True, print all register values, if False, print only the registers that do not match
 def check_register(check_all=False):
     for addr in range(57):
         val0 = int(reg0[addr]['Value'], 16)
@@ -89,6 +115,16 @@ def check_register(check_all=False):
                 .format(val0, reg, addr, reg0[addr]['Name']))
 
 
+# Given an array of data, this function will return the position and values of elements lower than the threshold in pairs
+# Arguments:
+#       data: array of data
+#       threshold: threshold value
+# Returns: list of tuples containing the position and value of elements lower than the threshold
+def find_threshold(data, threshold):
+    positions = np.where(data < threshold)[0]
+    values = data[positions]
+    return list(zip(positions, values))
+
 if __name__ == '__main__':
     # filter type is 'sinc4' or 'sinc3'
     ft = 'sinc3'
@@ -97,9 +133,10 @@ if __name__ == '__main__':
     set_filter(ft)
 
     data = np.array(ad7124.rx())
+    print(find_threshold(data, -0.9))
     
     # fig, (ax0, ax1) = plt.subplots(2, 1)
-    #     plt.plot(data)
+    # plt.plot(data)
     plt.plot(data[0], label='0')
     plt.plot(data[1], label='1')
     plt.plot(data[2], label='2')
@@ -113,9 +150,13 @@ if __name__ == '__main__':
     plt.ylabel('mV')
     plt.legend(bbox_to_anchor=(1., 1.))
 
-    # plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate)
     check_register(check_all=True)
-    print(real_sampling_rate())
+    print(real_sampling_rate(True))
+    print(real_sampling_rate(False))
+    # pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate(False))
+    # find the frequency where pxx is maximum
+    # print(freqs[np.argmax(pxx)])
+
     plt.tight_layout()
     # plt.savefig('fig/60Hz'+s+'.png')
     plt.show()
