@@ -12,8 +12,8 @@ ad7124 = adi.ad7124(uri="ip:localhost")
 # sc = ad7124.scale_available
 # ad7124.channel[ad_channel].scale = sc[-1]  # get highest range
 
-# sets sample rate for all channels
-# ad7124.sample_rate = 1600
+# Set sample rate for all channels
+ad7124.sample_rate = 1600
 
 # Set the output type of the ADC
 ad7124.rx_output_type = "SI"
