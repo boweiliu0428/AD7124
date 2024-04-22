@@ -13,6 +13,8 @@ ad7124 = adi.ad7124(uri="ip:localhost")
 # ad7124.channel[ad_channel].scale = sc[-1]  # get highest range
 
 # Set sample rate for all channels
+# WARNING: this is actually setting the FS[10:0] value
+#   For real sampling rate of each enabled channel, see real_sampling_rate function
 # ad7124.sample_rate = 1600
 
 # Set the output type of the ADC
@@ -22,7 +24,7 @@ ad7124.rx_output_type = "SI"
 ad7124.rx_enabled_channels = [0, 1, 2, 3, 4, 5, 6, 7]
 
 # Set the buffer size for data acquisition
-ad7124.rx_buffer_size = 200
+ad7124.rx_buffer_size = 256
 
 # Set the timeout for communication with the ADC
 ad7124._ctx.set_timeout(100000)
@@ -136,25 +138,25 @@ if __name__ == '__main__':
 #     print(find_threshold(data[3], -990))
     
     # plt.plot(data)
-    plt.plot(data[0], label='0')
-    plt.plot(data[1], label='1')
-    plt.plot(data[2], label='2')
-    plt.plot(data[3], label='3')
-    plt.plot(data[4], label='4')
-    plt.plot(data[5], label='5')
-    plt.plot(data[6], label='6')
-    plt.plot(data[7], label='7')
-    plt.grid()
-    plt.xlabel('sample')
-    plt.ylabel('mV')
-    plt.legend(bbox_to_anchor=(1., 1.))
+    # plt.plot(data[0], label='0')
+    # plt.plot(data[1], label='1')
+    # plt.plot(data[2], label='2')
+    # plt.plot(data[3], label='3')
+    # plt.plot(data[4], label='4')
+    # plt.plot(data[5], label='5')
+    # plt.plot(data[6], label='6')
+    # plt.plot(data[7], label='7')
+    # plt.grid()
+    # plt.xlabel('sample')
+    # plt.ylabel('mV')
+    # plt.legend(bbox_to_anchor=(1., 1.))
 
 #     check_register(check_all=True)
 #     print(real_sampling_rate(True, chan=3))
     print(real_sampling_rate(False))
-    # pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate(False))
+    pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate(False))
     # find the frequency where pxx is maximum
-    # print(freqs[np.argmax(pxx)])
+    print(freqs[np.argmax(pxx)])
 
     plt.tight_layout()
     # plt.savefig('fig/60Hz'+s+'.png')
