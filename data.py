@@ -68,9 +68,9 @@ def real_sampling_rate(from_reg: bool, chan=0):
         fs = freq2fs(ad7124.sample_rate)
     else: raise ValueError('fr must be True or False!')
 
-    # Dead Time = 30 when the old channel and the new channel both have 
+    # Dead Time = 29 when the old channel and the new channel both have 
     # an FS[10:0] > 1 or both have an FS[10:0] = 1
-    dt = 30
+    dt = 29
     if reg // (2**21) == 0: # sinc4 filter
         settle = (4 * 32 * fs + dt) / fclk # settle time
     elif reg // (2**21) == 2: # sinc3 filter
@@ -140,26 +140,26 @@ if __name__ == '__main__':
     print(freq2fs(ad7124.sample_rate))
     
     # plt.plot(data)
-    plt.plot(data[0], label='0')
-    plt.plot(data[1], label='1')
-    plt.plot(data[2], label='2')
-    plt.plot(data[3], label='3')
-    plt.plot(data[4], label='4')
-    plt.plot(data[5], label='5')
-    plt.plot(data[6], label='6')
-    plt.plot(data[7], label='7')
-    plt.grid()
-    plt.xlabel('sample')
-    plt.ylabel('mV')
-    plt.legend(bbox_to_anchor=(1., 1.))
+    # plt.plot(data[0], label='0')
+    # plt.plot(data[1], label='1')
+    # plt.plot(data[2], label='2')
+    # plt.plot(data[3], label='3')
+    # plt.plot(data[4], label='4')
+    # plt.plot(data[5], label='5')
+    # plt.plot(data[6], label='6')
+    # plt.plot(data[7], label='7')
+    # plt.grid()
+    # plt.xlabel('sample')
+    # plt.ylabel('mV')
+    # plt.legend(bbox_to_anchor=(1., 1.))
 
 #     check_register(check_all=True)
 #     print(real_sampling_rate(True, chan=3))
     print(real_sampling_rate(False))
-#     pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate(False))
-#     # find the frequency where pxx is maximum
-#     print(freqs[np.argmax(pxx)])
+    pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, real_sampling_rate(False))
+    # find the frequency where pxx is maximum
+    print(freqs[np.argmax(pxx)])
 
     plt.tight_layout()
-    plt.savefig('fig/1Hz_' + ft + '.pdf')
+    plt.savefig('fig/59Hz_' + ft + '.pdf')
     plt.show()
