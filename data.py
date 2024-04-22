@@ -24,10 +24,10 @@ ad7124.rx_output_type = "SI"
 ad7124.rx_enabled_channels = [3]
 
 # Set the buffer size for data acquisition
-ad7124.rx_buffer_size = 30000
+ad7124.rx_buffer_size = 40000
 
 # Set the timeout for communication with the ADC
-ad7124._ctx.set_timeout(1000000)
+ad7124._ctx.set_timeout(10000)
 
 # clock frequency at full power 
 # WARNING: the Python packge may implicitly change power mode
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     set_filter(ft)
 
     data = np.array(ad7124.rx())
-    print(find_threshold(data[3], -990))
+    print(find_threshold(data, -887))
     print(freq2fs(ad7124.sample_rate))
     
     plt.plot(data)
@@ -151,16 +151,17 @@ if __name__ == '__main__':
     plt.grid()
     plt.xlabel('sample')
     plt.ylabel('mV')
-    plt.legend(bbox_to_anchor=(1., 1.))
+#     plt.legend(bbox_to_anchor=(1., 1.))
+    plt.savefig('fig/1ch_1Hz_load_' + ft + '_dat.pdf')
 
 #     check_register(check_all=True)
 #     print(real_sampling_rate(True, chan=3))
     # print(real_sampling_rate(False))
     plt.figure()
-    pxx, freqs = plt.psd(data[3], ad7124.rx_buffer_size, ad7124.sample_rate)
+    pxx, freqs = plt.psd(data, ad7124.rx_buffer_size, ad7124.sample_rate)
     # find the frequency where pxx is maximum
     print(freqs[np.argmax(pxx)])
 
     plt.tight_layout()
-    plt.savefig('fig/1ch_384Hz_' + ft + '.pdf')
+    plt.savefig('fig/1ch_1Hz_load_' + ft + '_psd.pdf')
     plt.show()
